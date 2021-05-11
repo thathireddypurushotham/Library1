@@ -25,6 +25,7 @@ urlpatterns = [
     path('myreq/',views.myreq,name='myreq'),
     path('notedelete/<str:id>',views.datadelete,name="datadelete"),
     path('Bookdelete/<str:id>',views.Bookdelete,name="Bookdelete"),
+    path('Bookedit/<str:id>',views.Bookedit,name="Bookedit"),
     path('viewn/',views.viewnt,name='viewn'),
     path('notipending/',views.notipending,name="notipending"),
     path('accepting/',views.accepting,name="accepting"),

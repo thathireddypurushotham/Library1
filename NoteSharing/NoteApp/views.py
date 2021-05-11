@@ -66,15 +66,24 @@ def complaint(request):
 	return render(request,'html/complaint.html',{'p':form})'''
 def updpf(request):
 	if request.method=="POST":
-		u=UtupForm(request.POST,instance=request.user)
+		u=UtupForm(request.POST,instance=request.user.id)
 		i=ImForm(request.POST,request.FILES,instance=request.user.improfile)
 		if u.is_valid() and i.is_valid():
 			u.save()
 			i.save()
 			return redirect('/pro')
-	u=UtupForm(instance=request.user)
+	u=UtupForm(instance=request.user.id)
 	i=ImForm(instance=request.user.improfile)
 	return render(request,'html/updateprofile.html',{'us':u,'imp':i})
+def Bookedit(up,id):
+	t= Books_Avail.objects.get(id=id)
+	if up.method=="POST":
+		d=Books_AvailForm_admin(up.POST,instance=t)
+		if d.is_valid():
+			d.save()
+			return redirect('/ba')
+	d=Books_AvailForm_admin(instance=t)
+	return render(up,'html/bookupdate.html',{'us':d})
 @login_required
 
 
@@ -115,7 +124,6 @@ def sendrequest(rq):
 	if rq.method=="POST":
 		a=rq.POST['Book_name']
 		c=rq.POST['Book_author']
-
 		b=rq.POST['browser']
 		if b=='Book_Retrun':
 			notes=st_admin_data.objects.filter(Book_name=a)
@@ -212,7 +220,7 @@ def rejectadmin(req,id):
 	return redirect('/viewn')
 
 def books_return(request):
-	rc=st_admin_data.objects.filter(issue_status=3)
+	rc=st_admin_data.objects.all()
 	print(rc)
 	return render(request,'html/Books_return.html',{'rc':rc})
 

@@ -1,3 +1,4 @@
+
 {% extends 'html/base.html' %}
 {% load static %}
 {% block title %}allnotes{% endblock %}
@@ -23,7 +24,6 @@
 
 <div class="container">
 	<table class="table table-bordered">
-		<input type="button" value="Go back!" onclick="history.back()" class="btn btn-info">
 		<tr class="bg bg-info">
 			<td>S.No</td>
 			<td>Rg_No</td>
@@ -34,6 +34,7 @@
 			
 		</tr>
 		{% for i in rc %}
+		{% if i.issue_status is 3 %}
 			<tr>
 				<td>{{forloop.counter}}</td>
 				<td>{{i.Rg_No}}</td>
@@ -41,12 +42,16 @@
 				<td>{{i.Book_name}}</td>
 				<td>{{i.Book_author}}</td>
 
-				<td><a href="{% url 'return_accept' i.id %}" class="btn btn-info">RturnAccpt</a><a href="" class="btn btn-warning">RturnRjct</a></td>
+				<td><a href="{% url 'return_accept' i.id %}" class="btn btn-info">Return_Accept</a><a href="" class="btn btn-warning">Return_Reject</a></td>
 				
 				</td>				
 			</tr>
+			{% endif %}
+			{% endfor %}
+
 			{% for i in rc %}
-			{if i.issue_status is 4}
+			{% if i.issue_status is 4 %}
+			
 			<tr>
 				<td>{{forloop.counter}}</td>
 				<td>{{i.Rg_No}}</td>
@@ -54,12 +59,29 @@
 				<td>{{i.Book_name}}</td>
 				<td>{{i.Book_author}}</td>
 
-				<td>RturnAccptd</a></td>
+				<td class='bg-success'>Return_Accepted</a></td>
 				
 				</td>
+			</tr>
+			{% endif %}
+							
+		{% endfor %}
 
-			{% endfor %}
+			{% for i in rc %}
+			{% if i.issue_status is 5 %}
+			
+			<tr>
+				<td>{{forloop.counter}}</td>
+				<td>{{i.Rg_No}}</td>
+				<td>{{i.Name}}</td>	
+				<td>{{i.Book_name}}</td>
+				<td>{{i.Book_author}}</td>
 
+				<td class='bg-danger'>Return_Rejected</a></td>
+				
+				</td>
+			</tr>
+			{% endif %}
 							
 		{% endfor %}
 	</table>
