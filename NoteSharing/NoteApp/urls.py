@@ -35,6 +35,9 @@ urlpatterns = [
     path('books_return/',views.books_return,name='books_return'),
     path('return_accept/<int:id>',views.return_accept,name='return_accept'),
     # path('return_reject/',views.return_reject,name='return_reject'),
+    path('reqp/',views.requestform,name='pm'),
+    path('gper/',views.adminpermissions,name='gperm'),
+    path('eper/<int:k>/',views.updatepermissions,name='up'),
 
     
 

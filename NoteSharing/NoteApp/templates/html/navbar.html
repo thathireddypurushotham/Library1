@@ -32,11 +32,9 @@
       <a class="nav-link" href="{% url 'dsh' %}">Dashboard</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'complaint' %}">Complaint</a>
+      <a class="nav-link" href="{% url 'gperm' %}">Grant Permission</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'ct' %}">ContactUs</a>
-    </li>
+   
     <li class="nav-item">
       <a class="nav-link" href="{% url 'books_avail' %}">Books Available</a>
       
@@ -56,6 +54,7 @@
       <a class="nav-link" href="{% url 'viewn' %}">Notifications</a><!-- <sub class="text-light">View<sup class="text-danger">{{d}}</sup></sub> -->
     </li>
     {% else %}
+   {% if user.role == 1 %}
       <li class="nav-item">
       <a class="nav-link" href="{% url 'hm' %}">Home</a>
     </li>
@@ -86,6 +85,26 @@
      <li class="nav-item">
       <a class="nav-link" href="{% url 'Books' %}">Notifications</a>
     </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'hm' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'at' %}">AboutUs</a>
+    </li>
+   
+    
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'Books' %}">Contact Details</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'pm' %}">Make Permission</a>
+    </li>
+    {% endif %}
+
     {% endif %}
 
     {% endif %}
@@ -99,7 +118,11 @@
     {% else %}
   <li class="dropdown">
     <a type="button" class="nav-link dropdown-toggle" data-toggle="dropdown">
+      {% if user.role == 1 or user.is_superuser %}
       {{user.username}}
+       {% else %}
+       Guest
+       {% endif %}
     </a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="{% url 'cg' %}">Change Password</a>

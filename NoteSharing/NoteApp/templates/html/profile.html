@@ -16,13 +16,13 @@
 </div>-->
 <div class="container">
 	<div class="row">
-		<div class="col-md-4   card mx-5" Height=50%>
+		<div class="col-md-4  mt-4 card mx-2" Height=50%>
 			
-			<div class="card header bg-primary">
-				<h3>info</h3>
+			<div class="card header bg-primary mt-2">
+				<h3 class='mt-2 text-center'>Profile</h3>
 			</div>
 			<div class="card-body"  style = "height: 200px; ">
-				<img src="{{user.improfile.impf.url}} "  style = "height:100px; ">
+				<img src="{{user.impf.url}} "  style = "height:100px; ">
 				<h6>hi {{user.username}}</h6>
 				 
 			</div>
@@ -38,19 +38,27 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4 card">
-			<div class="card-header text-center bg-dark"> 
-			<h4>User Details</h4>
+		<div class="col-md-7 card mt-4  ">
+			<div class=" card-header text-center bg-info mt-2"> 
+			<h4 class='mt-2 text-center'>User Details</h4>
 		</div>
 			<div class="card-body bg-light">
 				<table class="text-center">
 				<tr>
-				<th>User name</th>
+				<th>Name</th>
 				<td class="text-center">{{user.username}}</td>
 				 </tr>
 				 <tr>
+				<th>Gmail </th>
+				<td class=" mr-2">{{user.email}}</td>
+				 </tr>
+				 <tr>
+				<th>Phone_No </th>
+				<td class="text-center">{{user.phone_no}}</td>
+				 </tr>
+				 <tr>
 				 	<th >Age</th>
-				 	<td class="mx-3" >{{user.improfile.age}}</td>
+				 	<td class="text-center mx-3" >{{user.age}}</td>
 				 </tr>
 				</table>
 			</div>

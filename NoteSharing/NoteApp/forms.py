@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from django import forms
-from NoteApp.models import ComplaintBox,ImProfile,Books_Avail,st_admin_data
+from NoteApp.models import ComplaintBox,Books_Avail,st_admin_data,User
 
 
 
@@ -17,19 +17,26 @@ class UsForm(UserCreationForm):
 			}),
 
 		}
-
+class Usperm(forms.ModelForm):
+	class Meta:
+		model = User
+		fields=["username","role"]
+		widgets={
+		 "username":forms.TextInput(attrs={"class":"form-control","readOnly":True,}),
+		 "role":forms.Select(attrs={"class":"form-control"}),
+		}
 class ComplaintForm(forms.ModelForm):
 	class Meta:
 		model=ComplaintBox
 		fields="__all__"
-class ImForm(forms.ModelForm):
-	class Meta:
-		model=ImProfile
-		fields=['age','gender',"impf"]
-		widgets={
-		"age":forms.NumberInput(attrs={"class":"form-control","placeholder":"update age",}),
-		"gender":forms.Select(attrs={"class":"form-control","placeholder":"Select your gender",}),
-		}
+# class ImForm(forms.ModelForm):
+# 	class Meta:
+# 		model=ImProfile
+# 		fields=['age','gender',"impf"]
+# 		widgets={
+# 		"age":forms.NumberInput(attrs={"class":"form-control","placeholder":"update age",}),
+# 		"gender":forms.Select(attrs={"class":"form-control","placeholder":"Select your gender",}),
+# 		}
 
 class UtupForm(forms.ModelForm):
 	class Meta:
@@ -54,7 +61,7 @@ class ChPwdForm(PasswordChangeForm):
 class Books_AvailForm(forms.ModelForm):
 	class Meta:
 		model=st_admin_data
-		fields=['Book_name','Book_author','Rg_No','Branch','Name']
+		fields=['Book_name','Book_author']
 		widgets={"Book_name":forms.TextInput(attrs={"class":"form-control "
 			,"placeholder":"Enter Book name","name":"Book_name","required":True}),
 		"Book_author":forms.TextInput(attrs={"class":"form-control "

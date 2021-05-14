@@ -1,16 +1,17 @@
 from django.shortcuts import render,redirect
-from NoteApp.forms import UsForm,ComplaintForm,ImForm,UtupForm,ChPwdForm,Books_AvailForm,Books_AvailForm_admin,Expire_date
+from NoteApp.forms import UsForm,ComplaintForm,UtupForm,ChPwdForm,Books_AvailForm,Books_AvailForm_admin,Expire_date,Usperm
 from django.core.mail import send_mail
 from NoteSharing import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
-from NoteApp.models import ImProfile,Books_Avail,st_admin_data
+from NoteApp.models import Books_Avail,st_admin_data,AbstractUser,User
 from django.contrib.auth.decorators import login_required
 import sys
+from time import gmtime, strftime
 
 # Create your views here.
-def home(request):
-	return render(request,'html/home.html')
+def home(rq):
+	return render(rq,'html/home.html')
 
 def about(request):
 	return render(request,'html/about.html')
@@ -20,16 +21,18 @@ def contact(request):
 
 def regi(request):
 	if request.method=="POST":
-		p=UsForm(request.POST)
-		if p.is_valid():
-			p.save()
+		t=UsForm(request.POST)
+		if t.is_valid():
+			t.save()
 			return redirect('/lg')
 	p=UsForm()
 	return render(request,'html/register.html',{'u':p})
+
+	
 @login_required
 
-def dashboard(request):
-	return render(request,'html/dashboard.html')
+def dashboard(rq):
+	return render(rq,'html/dashboard.html')
 
 
 def profile(request):
@@ -130,6 +133,8 @@ def sendrequest(rq):
 			for i in notes:
 				if i.Book_author==c and i.issue_status==1:
 					i.issue_status='3'
+					showtime = strftime("%Y-%m-%d")
+					print(showtime)
 					i.save()
 		else:
 			print(a)
@@ -145,6 +150,9 @@ def sendrequest(rq):
 				q=e.save(commit=False)
 				q.uid_id=rq.user.id
 				q.Book_count=k
+				q.Name=rq.user.username
+				q.Rg_No=rq.user.Rg_No
+				q.Branch=rq.user.Branch
 				q.save()
 
 		
@@ -228,7 +236,34 @@ def return_accept(rq,id):
 	rc=st_admin_data.objects.get(id=id)
 	rc.issue_status='4'
 	rc.save()
-	return redirect('books_return')
+	return redirect('/books_return')
+def requestform(rq):
+	e2=User.objects.get(id=rq.user.id)
+	if rq.method=='POST':
+		print(e2)
+		e2.Rg_No=rq.POST['rollno']
+		e2.Branch=rq.POST['dept']
+		e2.email=rq.POST['email']
+		e2.address=rq.POST['ad']
+		e2.phone_no=rq.POST['pn']
+		e2.save()
+		return redirect('/lg')
+	return render(rq,'html/requestp.html')
+
+def adminpermissions(request):
+	ty=User.objects.all()
+	return render(request,'html/adminpermissions.html',{'q':ty})
+
+def updatepermissions(request,k):
+	r=User.objects.get(id=k)
+	if request.method == "POST":
+		k=Usperm(request.POST,instance=r)
+		if k.is_valid():
+			k.save()
+			return redirect('/gper')
+	k2= Usperm(instance=r)
+	return render(request,'html/updatepermissions.html',{'y':k2})
+	
 
 
 

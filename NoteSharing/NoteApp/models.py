@@ -1,8 +1,28 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import UniqueConstraint
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+
+
+
+class User(AbstractUser):
+	t = (
+		(1,'student'),
+		(2,'guest'),
+		)
+	r=[('CSE','CSE'),('ECE','ECE'),('CIVIL','CIVIL'),('Mechanical','Mechanical'),('EEE','EEE'),('MBA','MBA')]
+	role = models.IntegerField(default=2,choices=t)
+	g=[('M',"Male"),('F','Female')]
+	age=models.IntegerField(default=10)
+	gender=models.CharField(max_length=10,choices=g,default="F")
+	impf=models.ImageField(upload_to='profiles/',default="profile.jpg")
+	Rg_No=models.CharField(max_length=120,default="")
+	Branch=models.CharField(choices=r,max_length=120,default="")
+	phone_no=models.CharField(null=True,default="1234567890",max_length=10)
+	address=models.CharField(max_length=200,default="Tirupathi")
 
 
 
@@ -22,6 +42,8 @@ class st_admin_data(models.Model):
 	Book_count=models.IntegerField(default=0)
 	Issue_date=models.DateField(blank=True,null=True)
 	Expire_date=models.DateField(blank=True,null=True)
+	Return_Date=models.DateField(blank=True,null=True)
+
 	uid=models.ForeignKey(User,on_delete=models.CASCADE)
 
 # @receiver(post_save,sender=User)
@@ -36,21 +58,9 @@ class Books_Avail(models.Model):
 	Book_count=models.IntegerField(default=0)
 	Book_Updatedcount=models.IntegerField(default=0)	
 
-
-@receiver(post_save,sender=User)
-def CreateProfile(sender,instance,created,**kwargs):
-	if created:
-		Books_Avail.objects.create(up=instance)
-
-class ImProfile(models.Model):
-	g=[('M',"male"),('F',"female")]
-	age=models.IntegerField(default=10)
-	impf=models.ImageField(upload_to='profiles/',default="profile.jpg")
-	gender=models.CharField(max_length=20,choices=g)
-	uid=models.OneToOneField(User,on_delete=models.CASCADE)
-
-
-@receiver(post_save,sender=User)
-def CreateProfile(sender,instance,created,**kwargs):
-	if created:
-		ImProfile.objects.create(uid=instance)
+# class ImProfile(models.Model):
+# 	g=[('M',"male"),('F',"female")]
+# 	age=models.IntegerField(default=10)
+# 	impf=models.ImageField(upload_to='profiles/',default="profile.jpg")
+# 	gender=models.CharField(max_length=20,choices=g)
+# 	uid=models.OneToOneField(User,on_delete=models.CASCADE)
