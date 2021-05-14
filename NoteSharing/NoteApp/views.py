@@ -8,6 +8,8 @@ from NoteApp.models import Books_Avail,st_admin_data,AbstractUser,User
 from django.contrib.auth.decorators import login_required
 import sys
 from time import gmtime, strftime
+from datetime import date
+
 
 # Create your views here.
 def home(rq):
@@ -134,7 +136,16 @@ def sendrequest(rq):
 				if i.Book_author==c and i.issue_status==1:
 					i.issue_status='3'
 					showtime = strftime("%Y-%m-%d")
-					print(showtime)
+					i.Return_Date=showtime
+					l=str(showtime).split("-")
+					l1=str(i.Expire_date).split("-")
+					d1 = date(int(l[0]), int(l[1]), int(l[2]))
+					d0 = date(int(l1[0]), int(l1[1]), int(l1[2]))
+					delta = d1 - d0
+					i.Fine=delta.days*2
+					print(delta.days)
+
+					print(l)
 					i.save()
 		else:
 			print(a)
@@ -263,7 +274,10 @@ def updatepermissions(request,k):
 			return redirect('/gper')
 	k2= Usperm(instance=r)
 	return render(request,'html/updatepermissions.html',{'y':k2})
-	
+def books_st_have(rq):
+	k2=st_admin_data.objects.filter(uid_id=rq.user.id)
+	print(k2)
+	return render(rq,'html/books_st_have.html',{'y':k2})
 
 
 

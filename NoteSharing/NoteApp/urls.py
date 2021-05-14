@@ -33,6 +33,7 @@ urlpatterns = [
     path('noteaccept/<str:id>',views.acceptadmin,name="acceptadmin"),
     path('notereject/<str:id>',views.rejectadmin,name="rejectadmin"),
     path('books_return/',views.books_return,name='books_return'),
+    path('books_st_have/',views.books_st_have,name="bk"),
     path('return_accept/<int:id>',views.return_accept,name='return_accept'),
     # path('return_reject/',views.return_reject,name='return_reject'),
     path('reqp/',views.requestform,name='pm'),

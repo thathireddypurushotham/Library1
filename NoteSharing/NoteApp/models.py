@@ -43,6 +43,7 @@ class st_admin_data(models.Model):
 	Issue_date=models.DateField(blank=True,null=True)
 	Expire_date=models.DateField(blank=True,null=True)
 	Return_Date=models.DateField(blank=True,null=True)
+	Fine=models.IntegerField(default=0)
 
 	uid=models.ForeignKey(User,on_delete=models.CASCADE)
 
